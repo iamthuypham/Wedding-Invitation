@@ -1,7 +1,7 @@
 {
-  "name": "asylum-connect-catalog",
+  "name": "my-wedding-invitation-2018",
   "version": "0.1.0",
-  "description": "Asylum Connect Catalog App powered by the One Degree API",
+  "description": "My wedding invitation app",
   "engines": {
     "node": "6.2.2"
   },
@@ -23,6 +23,7 @@
     "express": "4.15.2",
     "material-ui": "^1.0.0-beta.20",
     "react": "^15.6.1",
+    "react-countdown-now": "^1.2.0",
     "react-dom": "^15.6.1",
     "react-google-maps": "^7.1.0",
     "react-router": "^4.2.0",
