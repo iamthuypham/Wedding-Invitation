@@ -3,7 +3,7 @@ var path = require("path");
 
 var config = {
   entry: [
-    './src/index.js'
+    'whatwg-fetch','./src/index.js'
   ],
   output: {
     path: __dirname+'/public/js',
@@ -18,6 +18,9 @@ var config = {
       query: {
         presets: ['es2015', 'react']
       }
+    },{
+      test: /\.css$/,
+      loader:'css-loader'
     }]
   },
   resolve: {
@@ -30,7 +33,11 @@ var config = {
       }
     }),
     new webpack.optimize.AggressiveMergingPlugin()
-  ]
+  ],
+  devServer: {
+    compress: true,
+    disableHostCheck: true,
+ } 
 };
 
 if(process.env.NODE_ENV === 'production') {
