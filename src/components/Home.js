@@ -1,5 +1,6 @@
 import React from 'react';
 import Typist from 'react-typist';
+import Loader from './Loader';
 
 import Timer from './Timer';
 import Form from './Form';
@@ -66,6 +67,7 @@ class Home extends React.Component {
   constructor() {
     super();
     this.state={
+      loading: true,
       openStory: false,
       openForm: false,
       story: '',
@@ -73,6 +75,13 @@ class Home extends React.Component {
     this.handleOpenStory = this.handleOpenStory.bind(this)
     this.handleOpenForm = this.handleOpenForm.bind(this)
   };
+  componentWillMount(){
+       this.setState({loading: true}); //optional 
+    }
+
+    componentDidMount(){
+        setTimeout(() => this.setState({ loading: false }), 10000);
+    }
   handleOpenStory(){
     this.setState({openStory: !this.state.openStory, openForm: false,
       story: "We are a cute couple. We met and have been through a lot."
@@ -87,6 +96,10 @@ class Home extends React.Component {
     const { openStory, openForm, story } = this.state
     return (
       <div>
+        {this.state.loading ? 
+          (<Loader />
+          ):(
+          <div>
         <Typography type='headline' className={[classes.LoverFont, classes.alignCenter].join(' ')}>Save The Day</Typography>
         <Typography type='title' className={[classes.BilboFont, classes.alignCenter].join(' ')}>June 5th, 2018</Typography>
         <Timer />
@@ -116,6 +129,8 @@ class Home extends React.Component {
           </div>
         ):('')
         }
+        </div>
+        )}
       </div>
     );
   }
