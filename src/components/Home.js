@@ -1,11 +1,12 @@
 import React from 'react';
 import Typist from 'react-typist';
 import Anime from 'react-anime';
-import Sound from 'react-sound';
+import ScrollableAnchor from 'react-scrollable-anchor';
 
 import Loader from './Loader';
 import Timer from './Timer';
 import Form from './Form';
+import Music from './Music';
 
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
@@ -14,6 +15,9 @@ import Button from 'material-ui/Button';
 const styles = (theme) => ({
   LoverFont: {
     fontFamily: theme.custom.font.LoverFont,
+    '& >a': {
+      textDecoration: 'none',
+    }
   },
   BilboFont: {
     fontFamily: theme.custom.font.BilboFont,
@@ -68,6 +72,12 @@ const styles = (theme) => ({
   },
   extraInfo: {
     padding: '5%'
+  },
+  footer: {
+    paddingTop: '2%',
+    paddingBottom: '2%',
+    backgroundColor: theme.palette.common.dark,
+    textAlign: 'center'
   }
 });
 
@@ -75,6 +85,7 @@ class Home extends React.Component {
   constructor() {
     super();
     this.state={
+      position: 0,
       loading: true,
       openStory: false,
       openForm: false,
@@ -84,12 +95,13 @@ class Home extends React.Component {
     this.handleOpenForm = this.handleOpenForm.bind(this)
   };
   componentWillMount(){
-       this.setState({loading: true}); //optional 
+       this.setState({loading: true});
     }
 
   componentDidMount(){
-      setTimeout(() => this.setState({ loading: false }), 27000);
+    setTimeout(() => this.setState({ loading: false }), 27000);
   }
+  
   handleOpenStory(){
     this.setState({openStory: !this.state.openStory, openForm: false,
       story: "We are a cute couple. We met and have been through a lot."
@@ -104,11 +116,7 @@ class Home extends React.Component {
     const { openStory, openForm, story } = this.state
     return (
       <div>
-        <Sound
-          url="searching_for_you.mp3"
-          playStatus={Sound.status.PLAYING}
-          loop={true}
-        />
+        <Music />
         {this.state.loading ? 
           (<Loader />
           ):(
@@ -121,34 +129,49 @@ class Home extends React.Component {
               <Typography type='headline' className={[classes.LoverFont, classes.alignCenter].join(' ')}>Save The Day</Typography>
               <Typography type='title' className={[classes.BilboFont, classes.alignCenter].join(' ')}>June 5th, 2018</Typography>
               <Timer />
+              <Typography type='body2' className={[classes.LoverFont, classes.alignCenter].join(' ')}><a href='#details'>More Details</a></Typography>
             </div>
             </Anime>
-            <div className={classes.row}>
-              <div className={[classes.col50, classes.alignRightMobile].join(' ')}>
-                <Typography type='body1' className={classes.LoverFont}>Ceremony 11am</Typography>
-                <Typography type='body2' className={classes.BilboFont}>Vietnamese Martyrs Parish</Typography>
-                <Typography type='body2' className={classes.BilboFont}>6841 S 180th St.</Typography>
-                <Typography type='body2' className={classes.BilboFont}>Tukwila WA 98188</Typography>
-                <Button raised className={classes.AquaBtn} onClick={this.handleOpenStory} href='#story'>Our Story</Button>
+            <ScrollableAnchor id={'details'}>
+              <div className={classes.row}>
+                <div className={[classes.col50, classes.alignRightMobile].join(' ')}>
+                  <Typography type='body1' className={classes.LoverFont}>Ceremony 11am</Typography>
+                  <Typography type='body2' className={classes.BilboFont}>Vietnamese Martyrs Parish</Typography>
+                  <Typography type='body2' className={classes.BilboFont}>6841 S 180th St.</Typography>
+                  <Typography type='body2' className={classes.BilboFont}>Tukwila WA 98188</Typography>
+                  <Button raised className={classes.AquaBtn} onClick={this.handleOpenStory} href='#story'>Our Story</Button>
+                </div>
+                <div className={[classes.col50, classes.alignLeftMobile].join(' ')}>
+                  <Typography type='body1' className={classes.LoverFont}>Reception 5pm</Typography>
+                  <Typography type='body2' className={classes.BilboFont}>Tulalip Resort Casino</Typography>
+                  <Typography type='body2' className={classes.BilboFont}>10200 Quil Ceda Blvd</Typography>
+                  <Typography type='body2' className={classes.BilboFont}>Tulalip WA 98271</Typography>
+                  <Button raised className={classes.BlushBtn} onClick={this.handleOpenForm} href='#form'>Reserve</Button>
+                </div>
               </div>
-              <div className={[classes.col50, classes.alignLeftMobile].join(' ')}>
-                <Typography type='body1' className={classes.LoverFont}>Reception 5pm</Typography>
-                <Typography type='body2' className={classes.BilboFont}>Tulalip Resort Casino</Typography>
-                <Typography type='body2' className={classes.BilboFont}>10200 Quil Ceda Blvd</Typography>
-                <Typography type='body2' className={classes.BilboFont}>Tulalip WA 98271</Typography>
-                <Button raised className={classes.BlushBtn} onClick={this.handleOpenForm} href='#form'>Reserve</Button>
-              </div>
-            </div>
+            </ScrollableAnchor>
+            <ScrollableAnchor id={'story'}>
             {openStory?(
-              <div id='story' className={[classes.extraInfo, classes.alignCenter].join(' ')}><Typography type='display1'><Typist>{story}</Typist></Typography></div>
-            ):('')
+              
+                <div className={[classes.extraInfo, classes.alignCenter].join(' ')}><Typography type='display1'><Typist>{story}</Typist></Typography></div>
+              
+            ):(<div></div>)
             }
+            </ScrollableAnchor>
+            <ScrollableAnchor id={'form'}>
             {openForm?(
-              <div id='form' className={classes.extraInfo}>
-                <Form/>
-              </div>
-            ):('')
+              
+                <div className={classes.extraInfo}>
+                  <Form/>
+                </div>
+              
+            ):(<div></div>)
             }
+            </ScrollableAnchor>
+            <div className={classes.footer}>
+              <Typography type='display3' className={classes.BilboFont}>Designed with love by Thuy Pham</Typography>
+              <Typography type='display3' className={classes.BilboFont}>Thank you Jellis for awesome music - <a style={{color: 'white', textDecoration:'none'}}href='https://soundcloud.com/officialjellis/searching-for-you'>Searching For You</a></Typography>
+            </div>
           </div>
         )}
       </div>

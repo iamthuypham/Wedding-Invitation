@@ -82,6 +82,14 @@ export default createMuiTheme({
         "fontSize": "3vw",
       }
     },
+    "display3": {
+      "fontSize": "6.5vw",
+      "color": "white",
+      "lineHeight": 1.2,
+      '@media (min-width: 426px)': {
+        "fontSize": "2.5vw",
+      }
+    }
   },
   "custom": {
     "font":{

@@ -51,7 +51,7 @@ class Timer extends React.Component {
             <div>
               <Typography type='display1' className={classes.LoverFont}>
               <Typist>
-                <span>Dear Family & Friends,</span>
+                <span>Dear  Family &  Friends,</span>
                 <br />
                 <Typist.Delay ms={2200} />
                 <br />
