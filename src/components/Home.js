@@ -1,7 +1,9 @@
 import React from 'react';
 import Typist from 'react-typist';
-import Loader from './Loader';
+import Anime from 'react-anime';
+import Sound from 'react-sound';
 
+import Loader from './Loader';
 import Timer from './Timer';
 import Form from './Form';
 
@@ -15,6 +17,12 @@ const styles = (theme) => ({
   },
   BilboFont: {
     fontFamily: theme.custom.font.BilboFont,
+  },
+  savetheday: {
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
   },
   row: {
     display: 'flex',
@@ -79,9 +87,9 @@ class Home extends React.Component {
        this.setState({loading: true}); //optional 
     }
 
-    componentDidMount(){
-        setTimeout(() => this.setState({ loading: false }), 10000);
-    }
+  componentDidMount(){
+      setTimeout(() => this.setState({ loading: false }), 27000);
+  }
   handleOpenStory(){
     this.setState({openStory: !this.state.openStory, openForm: false,
       story: "We are a cute couple. We met and have been through a lot."
@@ -96,40 +104,52 @@ class Home extends React.Component {
     const { openStory, openForm, story } = this.state
     return (
       <div>
+        <Sound
+          url="searching_for_you.mp3"
+          playStatus={Sound.status.PLAYING}
+          loop={true}
+        />
         {this.state.loading ? 
           (<Loader />
           ):(
           <div>
-        <Typography type='headline' className={[classes.LoverFont, classes.alignCenter].join(' ')}>Save The Day</Typography>
-        <Typography type='title' className={[classes.BilboFont, classes.alignCenter].join(' ')}>June 5th, 2018</Typography>
-        <Timer />
-        <div className={classes.row}>
-          <div className={[classes.col50, classes.alignRightMobile].join(' ')}>
-            <Typography type='body1' className={classes.LoverFont}>Ceremony 11am</Typography>
-            <Typography type='body2' className={classes.BilboFont}>Vietnamese Martyrs Parish</Typography>
-            <Typography type='body2' className={classes.BilboFont}>6841 S 180th St.</Typography>
-            <Typography type='body2' className={classes.BilboFont}>Tukwila WA 98188</Typography>
-            <Button raised className={classes.AquaBtn} onClick={this.handleOpenStory}>Our Story</Button>
+            <Anime
+            duration={(el, i, l) => 2000 + (i * 1000)}
+            opacity={[0, 1]}
+            scale={[0.6, 1]}>
+            <div className={classes.savetheday}>
+              <Typography type='headline' className={[classes.LoverFont, classes.alignCenter].join(' ')}>Save The Day</Typography>
+              <Typography type='title' className={[classes.BilboFont, classes.alignCenter].join(' ')}>June 5th, 2018</Typography>
+              <Timer />
+            </div>
+            </Anime>
+            <div className={classes.row}>
+              <div className={[classes.col50, classes.alignRightMobile].join(' ')}>
+                <Typography type='body1' className={classes.LoverFont}>Ceremony 11am</Typography>
+                <Typography type='body2' className={classes.BilboFont}>Vietnamese Martyrs Parish</Typography>
+                <Typography type='body2' className={classes.BilboFont}>6841 S 180th St.</Typography>
+                <Typography type='body2' className={classes.BilboFont}>Tukwila WA 98188</Typography>
+                <Button raised className={classes.AquaBtn} onClick={this.handleOpenStory} href='#story'>Our Story</Button>
+              </div>
+              <div className={[classes.col50, classes.alignLeftMobile].join(' ')}>
+                <Typography type='body1' className={classes.LoverFont}>Reception 5pm</Typography>
+                <Typography type='body2' className={classes.BilboFont}>Tulalip Resort Casino</Typography>
+                <Typography type='body2' className={classes.BilboFont}>10200 Quil Ceda Blvd</Typography>
+                <Typography type='body2' className={classes.BilboFont}>Tulalip WA 98271</Typography>
+                <Button raised className={classes.BlushBtn} onClick={this.handleOpenForm} href='#form'>Reserve</Button>
+              </div>
+            </div>
+            {openStory?(
+              <div id='story' className={[classes.extraInfo, classes.alignCenter].join(' ')}><Typography type='display1'><Typist>{story}</Typist></Typography></div>
+            ):('')
+            }
+            {openForm?(
+              <div id='form' className={classes.extraInfo}>
+                <Form/>
+              </div>
+            ):('')
+            }
           </div>
-          <div className={[classes.col50, classes.alignLeftMobile].join(' ')}>
-            <Typography type='body1' className={classes.LoverFont}>Reception 5pm</Typography>
-            <Typography type='body2' className={classes.BilboFont}>Tulalip Resort Casino</Typography>
-            <Typography type='body2' className={classes.BilboFont}>10200 Quil Ceda Blvd</Typography>
-            <Typography type='body2' className={classes.BilboFont}>Tulalip WA 98271</Typography>
-            <Button raised className={classes.BlushBtn} onClick={this.handleOpenForm}>Reserve</Button>
-          </div>
-        </div>
-        {openStory?(
-          <div className={[classes.extraInfo, classes.alignCenter].join(' ')}><Typography type='display1'><Typist>{story}</Typist></Typography></div>
-        ):('')
-        }
-        {openForm?(
-          <div className={classes.extraInfo}>
-            <Form/>
-          </div>
-        ):('')
-        }
-        </div>
         )}
       </div>
     );
